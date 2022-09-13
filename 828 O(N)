@@ -1,0 +1,30 @@
+class Solution:
+    def uniqueLetterString(self, s: str) -> int:
+
+# i   01234567 
+#     LEETCODE
+# i+1 12345678    the i-th char is contributed i+1 times, e.g. 0th char has 1 cnt
+#     L        L:1                      1
+#     LE       L:1,E:2                  3
+#     LEE      L:1,E:1                  2 E is not unique, count 1 in [E, EE, LEE]. E last seen at idx 1, now seen at idx2, so cnt = 2-1 = 1
+#     LEET     L:1,E:1,T:4              6 E counts 1 in [ET]
+#     LEETC    L:1,E:1,T:4,C:5          11 E counts 1 in [ETC]
+#     LEETCO   L:1,E:1,T:4,C:5,O:6      17
+#     LEETCOD  L:1,E:1,T:4,C:5,O:6,D:7  24
+#     LEETCODE L:1,E:5,T:4,C:5,O:6,D:7  28 last E counts 5 in [E,DE, ODE,CODE, TCODE]. E last seen in idx 2, now seen at idx 7, cnt = 7-2=5
+#                           Total:      92
+        
+        chrCnt = {}
+        res = 0
+        n = len(s)
+        chrLastSeenIdx = {}
+        for i in range(n):
+            c = s[i]
+            if c in chrLastSeenIdx: # Seen before, not unique
+                chrCnt[c] = i - chrLastSeenIdx[c] # logic derived from above example
+            else: # unique
+                chrCnt[c] = i + 1 
+                
+            chrLastSeenIdx[c] = i
+            res += sum(chrCnt.values())
+        return res
