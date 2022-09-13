@@ -1,0 +1,22 @@
+class Solution:
+    def uniqueLetterString(self, s: str) -> int:
+        #if the substring is repeated then you cancel out what was previously used
+        
+        prev = defaultdict(int)
+        curr = defaultdict(int)
+        
+        #so that we can point back to it and not revieve null error
+        dp = [0]
+        
+        for loc, char in enumerate(s):
+            #set curr
+            curr[char] = loc - prev[char] + 1
+            #adding continuously the different steps of increasing values
+            dp.append(dp[-1] + sum(curr.values()))
+            #setting prev to location plus 1 for combinations between characters -> ABC = C BC ABC since we cant skip B and do AC
+            prev[char] = loc + 1
+        
+        return dp[-1]
+            
+        #TIME: O(N^2) where N is length of s
+        #SPACE: O(N) from the dicts 
