@@ -1,0 +1,31 @@
+class Solution:
+    def mostVisitedPattern(self, username: List[str], timestamp: List[int], website: List[str]) -> List[str]:
+        tuple_list = [ (username[idx], timestamp[idx], website[idx]) for idx in range(len(username))]
+        
+        # print(tuple_list)
+        
+        result = defaultdict(int)
+        user_dict = defaultdict(list)
+        
+        for t in tuple_list:
+            #changing into : joe: [(1, 'home')] form
+            user_dict[t[0]].append((t[1],t[2]))
+        # print(user_dict)
+        for user in user_dict:
+            #incase the users display is not already in order
+            user_dict[user].sort(key=lambda x: x[0])
+            # print(user_dict)
+            seen = set()
+            n = len(user_dict[user])
+            
+            #populating seen with possible variations
+            for i in range(n):
+                for j in range(i+1, n):
+                    for k in range(j+1, n):
+                        seen.add((user_dict[user][i][1],user_dict[user][j][1],user_dict[user][k][1]))
+                        
+            #adding what is in seen to result
+            for item in seen:
+                result[item]+=1
+        #sorting by reverse min so that the bottom will be the first occurance of the highest value
+        return min(result, key=lambda x: (-result[x], x))
