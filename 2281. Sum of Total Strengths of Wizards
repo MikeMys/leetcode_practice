@@ -1,0 +1,41 @@
+class Solution:
+    def get_presums(self, strength):
+            n = len(strength)
+            res = [0] * (n+2)
+            cur_sum = 0
+            
+            for i in range(n):
+                cur_sum += strength[i]
+                res[i+1] = (res[i] + cur_sum)
+            return res
+    
+    def totalStrength(self, strength: List[int]) -> int:
+            #monotonic stack
+        if not strength:
+            return 0
+
+        n = len(strength)
+        res = 0
+        stack = []
+
+        presums = self.get_presums(strength)
+        # print(presums)
+        
+        
+        for i, val in enumerate(itertools.chain(strength, [-float('inf')])):
+            #if the val is greater than what is on the stack, then need to remove it
+            while stack and val < strength[stack[-1]]:
+                min_idx = stack.pop()
+
+                if stack:
+                    left = stack[-1]
+                else:
+                    left = -1
+
+                sub_sum = (min_idx - left) * (presums[i] - presums[min_idx]) - (i - min_idx) * (presums[min_idx] - presums[left])
+
+                res+= sub_sum * strength[min_idx]
+                
+            stack.append(i)
+
+        return res % (10**9+7)
