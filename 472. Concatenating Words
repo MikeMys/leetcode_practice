@@ -1,0 +1,26 @@
+class Solution: 
+    
+    def findAllConcatenatedWordsInADict(self, words: List[str]) -> List[str]:
+        wordSet = set(words)
+        res = set()
+        
+        def dfs(s):
+            if not s:
+                return True
+            
+            for i in range(len(s)):
+                if s[:i+1] in wordSet:
+                    if dfs(s[i+1:]):
+                        return True
+            return False
+        
+        for word in wordSet:
+            wordSet.remove(word)
+            
+            if dfs(word):
+                res.add(word)
+            
+            wordSet.add(word)
+        return res
+    
+    
