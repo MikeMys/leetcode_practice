@@ -1,0 +1,19 @@
+class Solution:
+    def reorderLogFiles(self, logs: List[str]) -> List[str]:
+        letterLog = []
+        digitLog = []
+
+        for i, log in enumerate(logs):
+            s = log.split(" ")
+            if s[1].isdigit():
+                digitLog.append(log)
+            else:
+                #split letterLog into the search criteria
+                letterLog.append((s[1:], s[0], log))
+        print(letterLog)
+        letterLog = sorted(letterLog, key= lambda x: x[1])
+        letterLog = sorted(letterLog, key= lambda x: x[0])
+        ans = []
+        for l, key, log in letterLog:
+            ans.append(log)
+        return ans + digitLog
