@@ -1,0 +1,29 @@
+class Solution:
+    def subArrayRanges(self, nums: List[int]) -> int:
+        n = len(nums)
+        maxSum, minSum = 0, 0
+        stack = []
+        
+        #less than side for minSum
+        for location, smallerValue in enumerate(itertools.chain(nums, [-float('inf')])):
+            
+            while stack and (location == n or nums[stack[-1]] > smallerValue):
+                lastLocation = stack.pop()
+                prevSmaller = stack[-1] if stack else -1
+                minSum += nums[lastLocation] * (location - lastLocation) * (lastLocation - prevSmaller)
+            
+            stack.append(location)
+        stack = []    
+        
+        #greater than side for maxSum
+        for location, greaterValue in enumerate(itertools.chain(nums, [-float('inf')])):
+            
+            while stack and (location == n or nums[stack[-1]] < greaterValue):
+                lastLocation = stack.pop()
+                prevGreater = stack[-1] if stack else -1
+                maxSum += nums[lastLocation] * (location - lastLocation) * (lastLocation - prevGreater)
+            
+            stack.append(location)
+            
+        return maxSum - minSum
+    
