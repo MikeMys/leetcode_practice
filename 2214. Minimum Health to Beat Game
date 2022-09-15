@@ -1,0 +1,21 @@
+class Solution:
+    def minimumHealth(self, damage: List[int], armor: int) -> int:
+        sum_damage = sum(damage)
+        if armor == 0:
+            return sum_damage + 1
+        elif armor in damage:
+            return sum_damage - armor + 1
+        else:
+            max_damage = max(damage)
+            reduce = 0
+            if max_damage < armor:
+                reduce = max_damage
+            else:
+                reduce = armor
+            return sum_damage - reduce + 1
+        
+#         sum_damage = sum(damage)
+#         max_damage = max(damage)
+#         armor_can_spend = min(max_damage, armor)
+        
+#         return sum_damage - armor_can_spend + 1
