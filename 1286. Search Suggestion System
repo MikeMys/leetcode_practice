@@ -1,0 +1,20 @@
+class Solution:
+    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
+        
+        sorted_products = sorted(products)
+        res = []
+        
+        
+        for i, char in enumerate(searchWord):
+            #will hold the list of values that qualify
+            pool = []
+            for product in sorted_products:
+                #checking if len of product is less than location checking and if that location matches the search
+                if i < len(product) and product[i] == char:
+                    pool.append(product)
+            #adding first 3 from pool
+            res.append(pool[:3])
+            #setting new pool to only viable products
+            sorted_products = pool
+            
+        return res
