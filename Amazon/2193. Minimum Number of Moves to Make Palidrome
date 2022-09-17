@@ -1,0 +1,30 @@
+class Solution:
+    def minMovesToMakePalindrome(self, s: str) -> int:
+        s = list(s)
+        n = len(s)
+        ans = 0
+        
+        for left in range(n // 2):
+            
+            right = n - left - 1
+            if s[left] != s[right]:
+                l = left
+                r = right
+                
+                while s[left] != s[r]:
+                    r-=1
+                while s[right] != s[l]:
+                    l+=1
+                    
+                if right - r < l - left:
+                    ans+= right - r
+                    
+                    for x in range(r, right):
+                        s[x], s[x+1] = s[x+1], s[x]
+                
+                else:
+                    ans += l - left
+                    for x in range(l, left, -1):
+                        s[x], s[x-1] = s[x-1], s[x]
+                        
+        return ans
